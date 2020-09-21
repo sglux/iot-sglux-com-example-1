@@ -3,7 +3,7 @@
 ### Requirements
 * in any case it is required to edit the username and password in [tb_credentials.py](tb_credentials.py) with user credentials of a thingsboard tenant admin user
 * you may need to change the `tb_server_url` in [tb_server_defs.py](tb_server_defs.py) in order to use another thingsboard instance 
-* the following python packages must be installed via pip: `requests, datetime, pprint,   dateutils`
+* the following python packages must be installed via pip: `requests, datetime, pprint, dateutils, prettyTable`
 
 ### What it does
 1) it presents a list of known device types, in out case we are interested in devices of type sg-iot-gen* to choose from.

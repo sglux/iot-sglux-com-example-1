@@ -9,9 +9,10 @@ import pprint
 import dateutil
 from dateutil.parser import parse
 from dateutil.tz import gettz
+from prettytable import PrettyTable
 
 #import credentials from file: PLEASE UPDATE IN ANY CASE
-from tb_credentials_ import username, password
+from tb_credentials import username, password
 
 # import server URLS to be used: PLEASE UPDATE IF REQUIRED
 from tb_server_defs import tb_server_url, tb_server_api, tb_server_auth
@@ -32,10 +33,11 @@ tb_token =(data['token'])
 api_url = tb_server_api + '/device/types'
 data = requests.get(api_url, headers=tb_req_header(tb_token))
 dtps = json.loads((str(data.content,"utf-8")))
-print(dtps)
-print('\nIndex\tdeviceType')
+print('\nList of available device types in your account')
+t=PrettyTable(['Index','deviceType'])
 for index, obj in enumerate(dtps, start=0):
-    print(index,'\t',obj['type'],sep="")
+    t.add_row([index,obj['type']])
+print(t)
 if (index == 0) :
     print('Only one device type found, using this one!')
     deviceType = dtps[0]['type']
@@ -43,23 +45,44 @@ elif (index == None) :
     print('no devices / devicetypes found at all, exiting...')
     exit()
 else:
-    idx = get_num_input('Which device type:',0,index,0)
+    idx = get_num_input('Which device type',0,index,0)
     deviceType = dtps[idx]['type']
 
-# request list of avaliable devices of a specified type types
+# request list of avaliable devices of a specified type
 api_url = tb_server_api + '/tenant/devices?type=' + deviceType + '&limit=1000'
-
 data = requests.get(api_url, headers=tb_req_header(tb_token))
 types = json.loads((str(data.content,"utf-8")))
-# list their name and id
-print('\nIndex\tDevice-Name\tDevice-ID')
+print('\nList of the devices of the specified type')
+t=PrettyTable(['Index','deviceName','deviceID'])
 for index, obj in enumerate(types['data'], start=0):
-    print(index,'\t',obj['name'],'\t\t',obj['id']['id'],sep="")
+    t.add_row([index, obj['name'], obj['id']['id']])
+print(t)
+
 #ask user for the device
 devn = get_num_input('Enter the device by index',0,index,0)
 # set deviceID and deviceName for subsequent use
 deviceID = types['data'][devn]['id']['id']
 deviceName = types['data'][devn]['name']
+
+# get the list of attributes of that device
+api_url = tb_server_api + '/plugins/telemetry/DEVICE/' + deviceID + '/values/attributes'
+data = requests.get(api_url, headers=tb_req_header(tb_token))
+atts = json.loads((str(data.content,"utf-8")))
+print('\nList of the attributes of the selected device')
+t=PrettyTable(['Index','Attribute','Value'])
+for index, obj in enumerate(atts, start=0):
+    t.add_row([index, str(obj['key']), str(obj['value'])])
+print(t)
+
+# get the list of available time series of that device
+api_url = tb_server_api + '/plugins/telemetry/DEVICE/' + deviceID + '/keys/timeseries'
+data = requests.get(api_url, headers=tb_req_header(tb_token))
+keys = json.loads((str(data.content,"utf-8")))
+print('\nList of the available time series of the selected device')
+t=PrettyTable(['Index','timeseries Key'])
+for index, obj in enumerate(keys, start=0):
+    t.add_row([index,obj])
+print(t)
 
 # ... by building the url containing all request related parameters ...
 controller='/plugins/telemetry/DEVICE/'
@@ -68,16 +91,14 @@ Limit='limit=1000&'
 Keys ='&keys=uvi'
 
 # Startzeitpuntk
-date1 = dateutil.parser.isoparse(input('Enter start time (YYYY-MM-DD HH:MM): '))
+date1 = dateutil.parser.isoparse(input('\nEnter start time (YYYY-MM-DD HH:MM): '))
 ts1=str(int(date1.timestamp()))
 Start_t='&startTs=' + ts1 + '000'
-print(Start_t)
 
 # Endzeitpunkt
-date2 = dateutil.parser.isoparse(input('Enter start time (YYYY-MM-DD HH:MM): '))
+date2 = dateutil.parser.isoparse(input('\nEnter start time (YYYY-MM-DD HH:MM): '))
 ts2=str(int(date2.timestamp()))
 End_t='&endTs=' + ts2 + '000'
-print(End_t)
 
 # construct complete url
 api_url = tb_server_api + controller + deviceID + Val + Limit +Keys + Start_t + End_t

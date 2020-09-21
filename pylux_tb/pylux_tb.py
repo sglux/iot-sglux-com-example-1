@@ -8,7 +8,7 @@ import json
 def get_num_input(prompt, min, max, default):
     while True:
         try:
-            value = int(input(prompt + ' [' + str(min) + '...' + str(max) + '| def:' + str(default) + '] :'))
+            value = int(input(prompt + ' [' + str(min) + '...' + str(max) + ' | def:' + str(default) + '] : '))
         except ValueError:
             print('\nError, input was not a valid number, try again')
             continue
