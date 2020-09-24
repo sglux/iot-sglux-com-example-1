@@ -1,17 +1,23 @@
 # Example 1
-## Requesting data from iot.sglux.com (a [Thingsboard](https://thingsboard.io/))
+
+## Requesting data from iot.sglux.com 
+(or any other instance of [Thingsboard](https://thingsboard.io/) if you like)
+
 ### Requirements
-* in any case it is required to edit the username and password in [tb_credentials.py](tb_credentials.py) with user credentials of a thingsboard tenant admin user
-* you may need to change the `tb_server_url` in [tb_server_defs.py](tb_server_defs.py) in order to use another thingsboard instance 
-* the following python packages must be installed via pip: `requests, datetime, pprint, dateutils, prettyTable`
+
+* **_In any case it is required_** to edit the username and password constants in [tb_credentials.py](tb_credentials.py) to hold valid login credentials of a thingsboard tenant admin user, e.g. a user that is entitled to access the [Thingsboard API](https://thingsboard.io/docs/api/).
+* You may need to change the `tb_server_url` constant in [tb_server_defs.py](tb_server_defs.py) in order to use another thingsboard instance. It does not matter if thingsboard comes as PaaS or self deployed, dockerized, Personal or Community Edition.
+* The following python packages must be installed via pip: `requests, datetime, pprint, dateutils, prettyTable`. It is recommended to use `python -m pip install requests`  and so forth.
 
 ### What it does
+
 1) it presents a list of known device types, in out case we are interested in devices of type sg-iot-gen* to choose from.
 2) it presents a list of devices of the selected type to choose from
 3) it presents a list of avalable timeseries of this device to choose from
 4) it exports the requested data into an CSV file on your desktop, containing all device attributes in the header and the timeseries in the data sections
 
 ### Demo output
+
 ```
 List of available device types in your account
 +-------+----------------+

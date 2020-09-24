@@ -25,8 +25,12 @@ response = requests.post(tb_server_auth, headers=tb_auth_header(), data=tb_auth_
 data=json.loads((str(response.content,"utf-8")))
 # extract the access tokens
 tb_token =(data['token'])
-#tb_refresht = (data['refreshToken'])
-#print(tb_req_header(tb_token))
+
+# If you want to use SwaggerUI enable the below print statement. 
+# Copy everything printed out including "Bearer " to the value field
+# (api_key) in the "Authorize" dialog within SwaggerUI which you can
+# access under {your-server-url}/swagger-ui.html 
+#print('\nBearer '+ tb_token)
 
 # --------------------------------------------------------------------
 # now start with requests
@@ -87,7 +91,7 @@ print(t)
 # ... by building the url containing all request related parameters ...
 controller='/plugins/telemetry/DEVICE/'
 Val = '/values/timeseries?'
-Limit='limit=1000&'
+Limit='limit=100000&'
 Keys ='&keys=uvi'
 
 # Startzeitpuntk
