@@ -87,12 +87,16 @@ t=PrettyTable(['Index','timeseries Key'])
 for index, obj in enumerate(keys, start=0):
     t.add_row([index,obj])
 print(t)
+# ask user for telemetry type to pull
+keyn = get_num_input('Select the telemetry type by index',0,index,11)
+key_req = str(keys[keyn])
+print('Ok, pulling telemetry of type',key_req)
+Keys ='&keys='+key_req
 
 # ... by building the url containing all request related parameters ...
 controller='/plugins/telemetry/DEVICE/'
 Val = '/values/timeseries?'
-Limit='limit=100000&'
-Keys ='&keys=uvi'
+Limit='limit=1000000&'
 
 # Startzeitpuntk
 date1 = dateutil.parser.isoparse(input('\nEnter start time (YYYY-MM-DD HH:MM): '))
@@ -105,20 +109,20 @@ ts2=str(int(date2.timestamp()))
 End_t='&endTs=' + ts2 + '000'
 
 # construct complete url
-api_url = tb_server_api + controller + deviceID + Val + Limit +Keys + Start_t + End_t
+api_url = tb_server_api + controller + deviceID + Val + Limit + Keys + Start_t + End_t
 # request data
 print('\nRequesting Data for time range',ts1,'to',ts2)
 data = requests.get(api_url, headers=tb_req_header(tb_token))
 # convert received data from jsonpath to json object
 uvi_s=json.loads((str(data.content,"utf-8")))
-print('Received Data Points:', len(uvi_s['uvi']))
+print('Received Data Points:', len(uvi_s[key_req]))
 
 # convert and save data as csv file
-filename = os.path.expanduser("~") + '\\Desktop\\' + deviceName +'_data.csv'
+filename = os.path.expanduser("~") + '\\Desktop\\' + deviceName +'_data_'+key_req+'.csv'
 datei = open(filename , 'w')
-print('Timestamp','Time',str(deviceName), sep=';', file=datei)
-for index, obj in reversed(list(enumerate(uvi_s['uvi'], start=1))):
+print('Timestamp','Time',str(deviceName) + '/'+key_req, sep=';', file=datei)
+for index, obj in reversed(list(enumerate(uvi_s[key_req], start=1))):
+    # export epoch in seconds, time and date, selected telemetry
     print((str(obj['ts'])[:-3]), datetime.datetime.fromtimestamp(obj['ts']/1000), obj['value'], sep=';', file=datei)
-    #print((str(obj['ts'])[:-3]),obj['value'],sep=';')
 datei.close()
-print('\nWritten' , len(uvi_s['uvi']) ,'Data Points of device',deviceName,'from',date1,'to',date2,'into file',filename)
+print('\nWritten' , len(uvi_s[key_req]) ,'Data Points of device',deviceName,'from',date1,'to',date2,'into file',filename)

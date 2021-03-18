@@ -79,6 +79,8 @@ List of the available time series of the selected device
 |   11  |      uvi       |
 |   12  |      uviv      |
 +-------+----------------+
+Select the telemetry type by index [0...12 | default: 11] : 11
+Ok, pulling telemetry of type uvi
 
 Enter start time (YYYY-MM-DD HH:MM): 2020-09-09 00:00 
 Enter start time (YYYY-MM-DD HH:MM): 2020-09-10 22:00
