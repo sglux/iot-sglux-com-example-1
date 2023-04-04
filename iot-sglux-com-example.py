@@ -3,19 +3,36 @@
 import json
 import requests
 import datetime
-import time
-import os
-import pprint
+import os, sys
 import dateutil
-from dateutil.parser import parse
-from dateutil.tz import gettz
+from dateutil.parser import *
 from prettytable import PrettyTable
 
-#import credentials from file: PLEASE UPDATE IN ANY CASE
-from tb_credentials import username, password
+# try to import credentials from your private my_tb_credentials.py file
+try:
+    from my_tb_credentials import username, password
+except ImportError:
+    # if that file does not exist, try to import the credential template
+    try:
+        from tb_credentials import username, password
+    except ImportError:
+        print("You should copy tb_credentials.py to my_tb_credentials.py and fill it with your actual data!")
+        print(sys.exc_info())
+        exit()
 
-# import server URLS to be used: PLEASE UPDATE IF REQUIRED
-from tb_server_defs import tb_server_url, tb_server_api, tb_server_auth
+            
+# try to import credentials from your private my_tb_server_defs.py file
+try:
+    from my_tb_server_defs import tb_server_url, tb_server_api, tb_server_auth
+except ImportError:
+    # if that file does not exist, try to import the credential template
+    try:
+        from tb_server_defs import tb_server_url, tb_server_api, tb_server_auth
+    except ImportError:
+        print("You should copy tb_server_defs.py to my_tb_server_defs.py and fill it with your actual data!")
+        print(sys.exc_info())
+        exit()
+
 
 from pylux_tb import *
 

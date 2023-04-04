@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Ignore file with private credentials
+/my_tb_credentials.py
+/my_tb_server_defs.py
