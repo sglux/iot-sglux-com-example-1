@@ -5,16 +5,16 @@
 
 ### Requirements
 
-* **_In any case it is required_** to edit the username and password constants in [tb_credentials.py](tb_credentials.py) to hold valid login credentials of a thingsboard tenant admin user, e.g. a user that is entitled to access the [Thingsboard API](https://thingsboard.io/docs/api/).
-* You may need to change the `tb_server_url` constant in [tb_server_defs.py](tb_server_defs.py) in order to use another thingsboard instance. It does not matter if thingsboard comes as PaaS or self deployed, dockerized, Personal or Community Edition.
-* The following python packages must be installed via pip: `requests, datetime, pprint, dateutils, prettyTable`. It is recommended to use `python -m pip install requests`  and so forth.
+* **_In any case it is required_** to create a copy of [tb_credentials.py](tb_credentials.py) to a file `my_tb_credentials.py` and fill in valid login credentials of a thingsboard tenant admin user, e.g. a user that is entitled to access the [Thingsboard API](https://thingsboard.io/docs/api/).
+* **_In any case it is required_** to create a copy of [tb_server_defs.py](tb_server_defs.py) to `my_tb_server_defs.py` and enter the correct IP-address or full domain name of your thingsboard instance. It does not matter if thingsboard comes as PaaS or is self deployed, dockerized, Personal or Community Edition. In case you have an account on sglux's thingsboard instance, the server URL is `https://iot.sglux.com`.
+* The required python packages are listed in the `requirements.txt` file and could be installed via pip: `python -m pip install -r requirements.txt`.
 
 ### What it does
 
-1) it presents a list of known device types, in out case we are interested in devices of type sg-iot-gen* to choose from.
-2) it presents a list of devices of the selected type to choose from
-3) it presents a list of avalable timeseries of this device to choose from
-4) it exports the requested data into an CSV file on your desktop, containing all device attributes in the header and the timeseries in the data sections
+1) it presents a list of all known device types, in our case we are interested in devices of type sg-iot-gen.
+2) it presents a list of all devices of the selected type to choose from
+3) it presents a list of all avalable timeseries of that particular device to choose from
+4) it exports the requested data into an CSV file on your desktop
 
 ### Demo output
 
